@@ -74,6 +74,16 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: light
 
+plugins:
+  gitalk:
+    clientID: ed7172474a1e3c34da82
+    clientSecret: 337771537062da97167e0359f070abefe3dd8f9b
+    repo: lasmgratel.github.io
+    owner: LasmGratel
+    admin: 
+      - LasmGratel
+    distractionFreeMode: false
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:

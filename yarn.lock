@@ -691,6 +691,11 @@ hexo-pagination@1.0.0:
   resolved "https://repo.huaweicloud.com/repository/npm/hexo-pagination/-/hexo-pagination-1.0.0.tgz#c9c0ca3665267b9e9d0a89fc3edcaf3276907dc1"
   integrity sha512-miEVFgxchPr2qNWxw0JWpJ9R/Yaf7HjHBZVjvCCcqfbsLyYtCvIfJDxcEwz1sDOC/fLzYPqNnhUI73uNxBHRSA==
 
+hexo-plugin-gitalk@^0.2.0:
+  version "0.2.0"
+  resolved "https://repo.huaweicloud.com/repository/npm/hexo-plugin-gitalk/-/hexo-plugin-gitalk-0.2.0.tgz#a45be9eef0b8f8d994524e47411d90e40ea1b8d2"
+  integrity sha512-jKxO2sjyI9yTAl6KfpGisE9fzpizDKKGnKxTdx6FKr+v0O2m6lkfCk7kmgzqAcBUH2b853KAUMmvZye+Gvxzkw==
+
 hexo-renderer-ejs@^1.0.0:
   version "1.0.0"
   resolved "https://repo.huaweicloud.com/repository/npm/hexo-renderer-ejs/-/hexo-renderer-ejs-1.0.0.tgz#43c4de49eeae224036a457df860eb1c14c68b4b4"

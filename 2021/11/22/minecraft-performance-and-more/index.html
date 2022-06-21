@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Minecraft performance tuning and more | Lasm Gratel&#39;s Blog</title>
+  <meta name="author" content="Lasm Gratel">
+  
+  <meta name="description" content="多年的 Minecraft 服务器运维经验可以整理一下了，当然也讲点别的。
+本文内容针对 Forge 1.12.2 版本，其他 Minecraft 版本同理但有所出入
+Minecraft 服务器的性能主要有三个大开销，下面分别来讲讲三个部分以及它们的优化策略。
+
+TileEntity Tick
+
+T">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Minecraft performance tuning and more"/>
+  <meta property="og:site_name" content="Lasm Gratel&#39;s Blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Lasm Gratel&#39;s Blog</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/null">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-minecraft-performance-and-more" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-11-22T10:44:10.000Z"><a href="/2021/11/22/minecraft-performance-and-more/">2021-11-22</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Minecraft performance tuning and more</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>多年的 Minecraft 服务器运维经验可以整理一下了，当然也讲点别的。</p>
+<p>本文内容针对 Forge 1.12.2 版本，其他 Minecraft 版本同理但有所出入</p>
+<p>Minecraft 服务器的性能主要有三个大开销，下面分别来讲讲三个部分以及它们的优化策略。</p>
+<ol>
+<li><p>TileEntity Tick</p>
+<blockquote>
+<p>Tick 的实现可以在 <code>WorldServer#tick</code> 找到。</p>
+</blockquote>
+<p> 众所周知的开销大户，在一个大型整合包的中后期档中占用了主要部分。可以使用 <code>/forge track start tileentity 10</code> <code>/forge track tileentity</code> 来统计十秒内的 TileEntity tick 时间占用。找到对性能影响最大的几个方块拆除之。</p>
+<p> 常见情况：匠魂冶炼炉满了造成的巨幅卡顿，Ender IO 机器的 <em>输入/输出</em> 面放了一个容器。</p>
+<p> 当然更常见的情况是人多了，机器多了，虽然每个只占用 1ms，但是积攒起来还是很容易达到 50ms (20 TPS) 的上限。这个时候可能需要和玩家沟通，把生产线拆除甚至换成创造箱子等。如果服务器玩家组分时段上线，也可以考虑限制或禁止区块强制加载。</p>
+</li>
+<li><p>Entities Tick</p>
+<p> 实体的情况比较复杂。玩家身上穿了过多能与世界交互的装备（如吸铁石）就会造成卡顿，同样需要与这些玩家进行沟通。其他情况下一般需要清理掉落物品，减少刷怪，安装 AIImprovements 模组，在后期档直接开启和平模式等。实体可能只占用 10ms 的 Tick 时间，但是聊胜于无吧。</p>
+</li>
+<li><p>World Generation</p>
+<p> 跑图卡顿，在 1.13 之前的单线程世界生成所存在的问题。考虑删除 BOP，RTG 等大量修改世界生成的模组。</p>
+</li>
+<li><p>其他部分</p>
+<ul>
+<li><p>虽然 Minecraft 采用了先进的 Netty 异步网络数据处理方式，但是仍然可能发生从网络线程引入的卡顿。典型的情况是一个超大型 <em>应用能源</em> 网络，打开终端之后会因为处理，发送，接收大量数据而造成卡顿。一个带有特殊渲染模型的多方块结构也可能发生这种现象，因为要实时获取多方块机器数据。这种情况下考虑开启 BBR 算法，AE 拆分子网络等。</p>
+</li>
+<li><p>JVM 调优可以直接使用 <a target="_blank" rel="noopener" href="https://cyberdynecc.github.io/Thermos/install">Thermos</a> 给出的参数：<code>java -XX:+UseG1GC -XX:+UseFastAccessorMethods -XX:+OptimizeStringConcat -XX:MetaspaceSize=1024m -XX:MaxMetaspaceSize=2048m -XX:+AggressiveOpts -XX:MaxGCPauseMillis=10 -XX:+UseStringDeduplication -XX:hashCode=5 -Dfile.encoding=UTF-8</code></p>
+</li>
+<li><p>推荐使用 HotSpot JVM 而不是奇奇怪怪的各种 JVM，你不知道这些模组会用到什么奇怪的黑科技。</p>
+</li>
+<li><p><strong>不要使用洋垃圾 Xeon 开服！</strong></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>我们很少探索过大型整合包的后期档，很少探索大型 Mod 整合包带来的科技魅力，便是因为后期的性能问题。倘若能在性能和复杂的生产线之间做出很好的平衡，也许我们就可以欣赏到 Minecraft 中那种创造的魅力。</p>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"ed7172474a1e3c34da82","clientSecret":"337771537062da97167e0359f070abefe3dd8f9b","repo":"lasmgratel.github.io","owner":"LasmGratel","admin":["LasmGratel"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/minecraft/">minecraft</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="https://lasmgratel.github.io/2021/11/22/minecraft-performance-and-more/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="as_sitesearch" value="lasmgratel.github.io">
+  </form>
+</div>
+
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/minecraft/">minecraft</a><small>2</small></li>
+  
+    <li><a href="/tags/thoughts/">thoughts</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2022 Lasm Gratel
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

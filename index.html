@@ -45,6 +45,79 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-2022-09-25" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-09-25T12:26:28.000Z"><a href="/2022/09/25/2022-09-25/">2022-09-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/09/25/2022-09-25/">2022-09-25 杂谈</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第一篇杂谈的前言：</span><br><span class="line">由于我整理不出来一个完整的思想体系（亦或没有这种必要），以后有什么想法我会先写下来发到博客上，作为参考和备份。</span><br></pre></td></tr></table></figure>
+
+<h1 id="对“rust是从语法上规避了gc”的回复"><a href="#对“rust是从语法上规避了gc”的回复" class="headerlink" title="对“rust是从语法上规避了gc”的回复"></a>对“rust是从语法上规避了gc”的回复</h1><blockquote>
+<p>rust是从语法上规避了gc</p>
+</blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/nomicon/ownership.html">https://doc.rust-lang.org/nomicon/ownership.html</a></p>
+<p>Rust 是在规避 GC，但其理由在于：如果我们能引入一种机制，使得我们能通过语法分析便可以回收堆上内存（如 String，Rust struct 等），那么就可以规避 GC。所以 Rust 引入了生命周期，所有权的概念。</p>
+<p>要注意一点：<strong>生命周期，所有权等概念只在编译期有效。</strong> 当编译之后，在其生命周期的末尾会将其 drop 掉。</p>
+<p>这有点像传统的栈上内存：先入后出。最先入栈的最后出栈，最先分配内存的最后 drop。</p>
+<p>程序逻辑上并不会这么单线条，共享引用，循环引用等问题仍会发生。另一种常见的情况是你实在受不了一大堆生命周期标注，这时候就需要 reference-counter 来解决。</p>
+<p><em>你有没有考虑过 reference-counter 就是一种 GC？</em></p>
+<p>社区实现了另一种常见的 GC：<a target="_blank" rel="noopener" href="https://github.com/Manishearth/rust-gc">Mark and sweep GC</a>。在 Java 1.7 及之前使用的默认 GC 也是这个算法（CMS）。</p>
+<p>所以 Rust 在语法上确实尽量规避 GC，但由于程序本身的特性（或考虑到各种抽象开至），GC 仍然存在。</p>
+<h1 id="关于如何缓存图片"><a href="#关于如何缓存图片" class="headerlink" title="关于如何缓存图片"></a>关于如何缓存图片</h1><p>首先，对于能通过 ID 对应的图片缓存才有意义，如果图片只有个 ETag 那缓存就是浏览器的工作，如果连 ETag 都没有那说明这个东西就不应该缓存。</p>
+<p>需要缓存的图片可以分三类进行处理，我分别起了三个名字：</p>
+<ol>
+<li>Hash 式：这类图片完全不会改动，并且已知固定链接，例如<a target="_blank" rel="noopener" href="https://www.bungie.net/common/destiny2_content/screenshots/3886416794.jpg">命运2的一个武器截图</a>。这种情况下可以一次性缓存并用ID对应，不需要做其他处理。</li>
+<li>API 式（Gravatar）式：这类图片有一个固定的链接，但图片可能会发生更新。我们通过向服务器发送带有 <code>If-None-Match</code> 或 <code>If-Modified-Since</code> 请求头的请求，判断返回码为 200（有变动）或 304 Not Modified 来更新并验证缓存。</li>
+<li>Steam 社区式：例如 Steam 某游戏的商店页的第x张截图，这类图片有一个乱七八糟的 URL 不好找到对应关系，图片也有可能变动，我们先将这个图片的缓存返回给用户，同时后台创建一个背景任务比较并更新。这样可以得到最佳的用户体验，同时也能保证时效性。</li>
+</ol>
+<p>同时图片的修改日期也应当缓存，可以删除6个月或1年以上未使用的图片来节省空间。</p>
+<h1 id="哲学问题"><a href="#哲学问题" class="headerlink" title="哲学问题"></a>哲学问题</h1><blockquote>
+<p>非A，还是A的非？</p>
+</blockquote>
+<p>我要保护环境，燃烧秸秆是污染环境，我为了不污染环境我就禁止燃烧秸秆</p>
+<p>我要离开二中，二中搞了xxx规定，我只要跟xxx反其道而行之我就是离开二中</p>
+<p>独裁就是自己拿意见，所以只要不是自己拿意见我就是民主</p>
+<h2 id="关于自责"><a href="#关于自责" class="headerlink" title="关于自责"></a>关于自责</h2><p>自责的要求，是在别人面前表现自责的态度，还是自己内心反省？</p>
+<p>前者是一种表现，后者是一种自残。</p>
+<p>当你在提到前者的时候，你把“我”作为了一个符号来批判，这个时候的“我”是之前的我。</p>
+<p>后者则是批判“我”的整体集合。</p>
+<p>LG在这里觉得这两种符号上的区别（或分不清区别）是导致人们自我怀疑自我否定的罪魁祸首。</p>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"ed7172474a1e3c34da82","clientSecret":"337771537062da97167e0359f070abefe3dd8f9b","repo":"lasmgratel.github.io","owner":"LasmGratel","admin":["LasmGratel"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-java-generic-sucks" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -422,6 +495,8 @@
   <ul class="entry">
   
     <li><a href="/tags/minecraft/">minecraft</a><small>2</small></li>
+  
+    <li><a href="/tags/miscellaneous/">miscellaneous</a><small>1</small></li>
   
     <li><a href="/tags/thoughts/">thoughts</a><small>2</small></li>
   

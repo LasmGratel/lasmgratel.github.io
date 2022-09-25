@@ -598,6 +598,11 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+hexo-asset-link@^2.2.1:
+  version "2.2.1"
+  resolved "https://repo.huaweicloud.com/repository/npm/hexo-asset-link/-/hexo-asset-link-2.2.1.tgz#2665141a9324f02d20c4612df3b913d6c2cb2159"
+  integrity sha512-YQxqkX+fUmzAjgbiExr1paMtfBuWuMTzhUTma+eruIybdvi9mL90Hz0sYEI8dfTl1JoJbl9Jjp5hrC5/saZwUw==
+
 hexo-cli@^4.0.0:
   version "4.3.0"
   resolved "https://repo.huaweicloud.com/repository/npm/hexo-cli/-/hexo-cli-4.3.0.tgz#4bb2bf11a30fae601f2f53ac0cb833fee3187649"

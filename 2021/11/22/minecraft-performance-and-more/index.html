@@ -11,8 +11,7 @@
 Minecraft 服务器的性能主要有三个大开销，下面分别来讲讲三个部分以及它们的优化策略。
 
 TileEntity Tick
-
-T">
+Ti">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -25,13 +24,15 @@ T">
 
   <link rel="shortcut icon" href="/favicon.png">
   
+    <link rel="alternate" href="/atom.xml" title="Lasm Gratel's Blog" type="application/atom+xml">
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
   
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 
 
 <body>
@@ -68,23 +69,21 @@ T">
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <p>多年的 Minecraft 服务器运维经验可以整理一下了，当然也讲点别的。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>多年的 Minecraft 服务器运维经验可以整理一下了，当然也讲点别的。</p>
 <p>本文内容针对 Forge 1.12.2 版本，其他 Minecraft 版本同理但有所出入</p>
 <p>Minecraft 服务器的性能主要有三个大开销，下面分别来讲讲三个部分以及它们的优化策略。</p>
 <ol>
 <li><p>TileEntity Tick</p>
-<blockquote>
-<p>Tick 的实现可以在 <code>WorldServer#tick</code> 找到。</p>
-</blockquote>
-<p> 众所周知的开销大户，在一个大型整合包的中后期档中占用了主要部分。可以使用 <code>/forge track start tileentity 10</code> <code>/forge track tileentity</code> 来统计十秒内的 TileEntity tick 时间占用。找到对性能影响最大的几个方块拆除之。</p>
-<p> 常见情况：匠魂冶炼炉满了造成的巨幅卡顿，Ender IO 机器的 <em>输入/输出</em> 面放了一个容器。</p>
-<p> 当然更常见的情况是人多了，机器多了，虽然每个只占用 1ms，但是积攒起来还是很容易达到 50ms (20 TPS) 的上限。这个时候可能需要和玩家沟通，把生产线拆除甚至换成创造箱子等。如果服务器玩家组分时段上线，也可以考虑限制或禁止区块强制加载。</p>
+<p><em>Tick 的实现可以在 <code>WorldServer#tick</code> 找到。</em></p>
+<p>众所周知的开销大户，在一个大型整合包的中后期档中占用了主要部分。可以使用 <code>/forge track start tileentity 10</code> <code>/forge track tileentity</code> 来统计十秒内的 TileEntity tick 时间占用。找到对性能影响最大的几个方块拆除之。</p>
+<p>常见情况：匠魂冶炼炉满了造成的巨幅卡顿，Ender IO 机器的 <em>输入/输出</em> 面放了一个容器。</p>
+<p>当然更常见的情况是人多了，机器多了，虽然每个只占用 1ms，但是积攒起来还是很容易达到 50ms (20 TPS) 的上限。这个时候可能需要和玩家沟通，把生产线拆除甚至换成创造箱子等。如果服务器玩家组分时段上线，也可以考虑限制或禁止区块强制加载。</p>
 </li>
 <li><p>Entities Tick</p>
-<p> 实体的情况比较复杂。玩家身上穿了过多能与世界交互的装备（如吸铁石）就会造成卡顿，同样需要与这些玩家进行沟通。其他情况下一般需要清理掉落物品，减少刷怪，安装 AIImprovements 模组，在后期档直接开启和平模式等。实体可能只占用 10ms 的 Tick 时间，但是聊胜于无吧。</p>
+<p>实体的情况比较复杂。玩家身上穿了过多能与世界交互的装备（如吸铁石）就会造成卡顿，同样需要与这些玩家进行沟通。其他情况下一般需要清理掉落物品，减少刷怪，安装 AIImprovements 模组，在后期档直接开启和平模式等。实体可能只占用 10ms 的 Tick 时间，但是聊胜于无吧。</p>
 </li>
 <li><p>World Generation</p>
-<p> 跑图卡顿，在 1.13 之前的单线程世界生成所存在的问题。考虑删除 BOP，RTG 等大量修改世界生成的模组。</p>
+<p>跑图卡顿，在 1.13 之前的单线程世界生成所存在的问题。考虑删除 BOP，RTG 等大量修改世界生成的模组。</p>
 </li>
 <li><p>其他部分</p>
 <ul>
@@ -184,6 +183,16 @@ T">
   <ul class="entry">
   
     <li><a href="/tags/minecraft/">minecraft</a><small>2</small></li>
+  
+    <li><a href="/tags/miscellaneous/">miscellaneous</a><small>1</small></li>
+  
+    <li><a href="/tags/miscellaneous-philosophy/">miscellaneous philosophy</a><small>2</small></li>
+  
+    <li><a href="/tags/music/">music</a><small>1</small></li>
+  
+    <li><a href="/tags/philosophy/">philosophy</a><small>2</small></li>
+  
+    <li><a href="/tags/philosophy-thoughts/">philosophy thoughts</a><small>1</small></li>
   
     <li><a href="/tags/thoughts/">thoughts</a><small>2</small></li>
   

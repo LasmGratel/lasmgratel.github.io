@@ -64,10 +64,10 @@
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <p>Java’s generics type erasure has been regarded as a failure design since JDK 1.5, but I haven’t realized it until today when I run into a serious issue about it.</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>Java’s generics type erasure has been regarded as a failure design since JDK 1.5, but I haven’t realized it until today when I run into a serious issue about it.</p>
 <h2 id="The-issue"><a href="#The-issue" class="headerlink" title="The issue"></a>The issue</h2><p>I’m using <a target="_blank" rel="noopener" href="https://github.com/TheElectronWill/night-config">night-config</a> library to parse TOML config file for my program. I parsed and stored a list of <code>long</code> from TOML. Right after I got my program up and running, I noticed that <code>list.contains(x)</code> failures at random numbers. Those numbers seem to exist in the list and successfully printed out, but I cannot locate the issue based on the information I got.</p>
 <p>So I read the TOML parser it self, trying to locate where it handles Integer/Long parsing and found the function that deal with number parsing:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://github.com/TheElectronWill/night-config/blob/master/toml/src/main/java/com/electronwill/nightconfig/toml/ValueParser.java#L76</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Number <span class="title">parseNumber</span><span class="params">(CharsWrapper valueChars)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">long</span> longValue;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        longValue = Utils.parseLong(numberChars, base);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NumberFormatException ex) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ParsingException(<span class="string">&quot;Invalid integer value: &quot;</span> + valueChars);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> intValue = (<span class="keyword">int</span>)longValue;</span><br><span class="line">    <span class="keyword">if</span> (intValue == longValue) &#123;</span><br><span class="line">        <span class="keyword">return</span> intValue;<span class="comment">// returns an int if it is enough to represent the value correctly</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> longValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://github.com/TheElectronWill/night-config/blob/master/toml/src/main/java/com/electronwill/nightconfig/toml/ValueParser.java#L76</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Number <span class="title function_">parseNumber</span><span class="params">(CharsWrapper valueChars)</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="type">long</span> longValue;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        longValue = Utils.parseLong(numberChars, base);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NumberFormatException ex) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ParsingException</span>(<span class="string">&quot;Invalid integer value: &quot;</span> + valueChars);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">intValue</span> <span class="operator">=</span> (<span class="type">int</span>)longValue;</span><br><span class="line">    <span class="keyword">if</span> (intValue == longValue) &#123;</span><br><span class="line">        <span class="keyword">return</span> intValue;<span class="comment">// returns an int if it is enough to represent the value correctly</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> longValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Note that: <code>returns an int if it is enough to represent the value correctly</code></p>
 <p>So the output list, assumptively <code>ArrayList&lt;Long&gt;</code> typed, does consist <strong>both</strong> Integer and Long <em>if Integer is enought to represent the value</em>, calling <code>List.contains</code> will certainly fail if you pass a long parameter to check whether <strong>the number, which is actually int</strong>, is in the collection.</p>
@@ -77,15 +77,6 @@
 <p>Blame Java for it’s bad design.</p>
 <p>In this case, cast boxed int or long values to Number and cast it back to Long, then store them in a <code>LongArrayList</code>.</p>
 
-<div id="gitalk-container"></div>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-		<script>
-		var gitalkConfig = {"clientID":"ed7172474a1e3c34da82","clientSecret":"337771537062da97167e0359f070abefe3dd8f9b","repo":"lasmgratel.github.io","owner":"LasmGratel","admin":["LasmGratel"],"distractionFreeMode":false};
-	    gitalkConfig.id = md5(location.pathname);
-		var gitalk = new Gitalk(gitalkConfig);
-	    gitalk.render("gitalk-container");
-	    </script>
       
     </div>
     <footer>
@@ -160,7 +151,9 @@
   
     <li><a href="/tags/miscellaneous-philosophy/">miscellaneous philosophy</a><small>2</small></li>
   
-    <li><a href="/tags/philosophy/">philosophy</a><small>2</small></li>
+    <li><a href="/tags/music/">music</a><small>1</small></li>
+  
+    <li><a href="/tags/philosophy/">philosophy</a><small>3</small></li>
   
     <li><a href="/tags/philosophy-thoughts/">philosophy thoughts</a><small>1</small></li>
   
@@ -174,7 +167,7 @@
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2022 Lasm Gratel
+  &copy; 2023 Lasm Gratel
   
 </div>
 <div class="clearfix"></div></footer>

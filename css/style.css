@@ -1,9 +1,28 @@
-@import url("//fonts.googleapis.com/css?family=Lato:400,400italic");
+@import url("//fonts.loli.net/css?family=Helvetica Neue:400,400italic&display=swap");
+@import url("//fonts.loli.net/css?family=Lato:400,400italic&display=swap");
+@import url("//fonts.loli.net/css?family=Consolas:400,400italic&display=swap");
+@import url("//cdnjs.loli.net/ajax/libs/lxgw-wenkai-screen-webfont/1.6.0/style.min.css");
 @font-face {
   font-family: 'FontAwesome';
   font-style: normal;
   font-weight: normal;
   src: url("font/fontawesome-webfont.eot?#iefix") format('embedded-opentype'), url("font/fontawesome-webfont.woff") format('woff'), url("font/fontawesome-webfont.ttf") format('truetype'), url("font/fontawesome-webfont.svg#FontAwesomeRegular") format('svg');
+}
+@font-face {
+  font-family: 'Computer Modern Unicode';
+  font-style: normal;
+  font-weight: 400;
+  src: url("font/cmu/cmunorm.woff2") format('woff2'), url("font/cmu/cmunorm.ttf") format('truetype'), local('Computer Modern Unicode');
+  font-display: swap;
+  size-adjust: 100%;
+}
+@font-face {
+  font-family: 'Computer Modern Unicode';
+  font-style: italic;
+  font-weight: 400;
+  src: url("font/cmu/cmunoti.woff2") format('woff2'), url("font/cmu/cmunoti.ttf") format('truetype'), local('Computer Modern Unicode');
+  font-display: swap;
+  size-adjust: 115%;
 }
 * {
   margin: 0;
@@ -12,8 +31,9 @@
 body {
   background: #eee;
   color: #444;
-  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-size: 14px;
+  font-family: "Computer Modern Unicode", "LXGW WenKai Screen", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
   text-shadow: 0 0 1px transparent;
 }
 @media screen and (max-width: 1260px) {
@@ -32,7 +52,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: "Lato", Helvetica Neue, Helvetica, "LXGW WenKai Screen", Arial, sans-serif;
 }
 h1 {
   font-size: 1.8em;
@@ -124,7 +144,7 @@ a:hover {
   margin-top: 10px;
 }
 #header #main-nav {
-  font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: "Lato", Helvetica Neue, Helvetica, "LXGW WenKai Screen", Arial, sans-serif;
   line-height: 2.5em;
 }
 #header #main-nav ul {
@@ -258,7 +278,7 @@ article header .icon:before {
 }
 article header time {
   color: #999;
-  font: 0.9em "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 0.9em "Lato", Helvetica Neue, Helvetica, "LXGW WenKai Screen", Arial, sans-serif;
   margin-bottom: 5px;
   display: block;
   line-height: 1;
@@ -319,7 +339,7 @@ article .entry blockquote {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   font-style: italic;
-  font-family: "Georgia", serif;
+  font-family: "Computer Modern Unicode", "LXGW WenKai Screen", "Georgia", serif;
   font-size: 1.2em;
   padding: 0 30px 15px;
   text-align: center;
@@ -338,7 +358,7 @@ article .entry blockquote footer cite:before {
 }
 article .entry code,
 article .entry pre {
-  font-family: Monaco, Menlo, Consolas, Courier New, monospace;
+  font-family: "Consolas", monospace;
 }
 article .entry code {
   background: #eee;
@@ -515,7 +535,7 @@ article footer .addthis iframe {
   padding: 5px 10px;
   background: #ddd;
   color: #999;
-  font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: "Lato", Helvetica Neue, Helvetica, "LXGW WenKai Screen", Arial, sans-serif;
   text-shadow: 0 0 1px #fff;
   margin-bottom: 50px;
 }
@@ -614,7 +634,7 @@ article footer .addthis iframe {
 }
 #sidebar .search input {
   background: #fff;
-  font-family: "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: "Lato", Helvetica Neue, Helvetica, "LXGW WenKai Screen", Arial, sans-serif;
   font-style: italic;
   font-size: 1em;
   padding: 10px 15px;
@@ -662,7 +682,7 @@ article footer .addthis iframe {
 #footer {
   color: #999;
   margin-bottom: 50px;
-  font: 0.9em/1.6 "Lato", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 0.9em/1.6 "Lato", Helvetica Neue, Helvetica, "LXGW WenKai Screen", Arial, sans-serif;
   text-shadow: 0 0 1px #fff;
 }
 .entry .gist {
@@ -688,7 +708,7 @@ article footer .addthis iframe {
 }
 .entry .gist .gist-file .gist-data pre {
   padding: 0 !important;
-  font-family: Monaco, Menlo, Consolas, Courier New, monospace;
+  font-family: "Computer Modern Unicode", "LXGW WenKai Screen", Monaco, Menlo, Consolas, Courier New, monospace;
 }
 .entry .gist .gist-file .gist-meta {
   background: none;
@@ -715,6 +735,8 @@ figure.highlight {
   overflow: auto;
   position: relative;
   font-size: 0.9em;
+  font-family: "Consolas", monospace;
+  font-weight: 400;
 }
 figure.highlight figcaption {
   color: #999;

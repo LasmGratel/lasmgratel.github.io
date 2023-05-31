@@ -1,0 +1,10 @@
+name: 'Purge CloudFlare Cache'
+on:
+  push:
+    branches:
+      - gh-pages
+jobs:
+  purge-cache:
+    name: "Purge Cache"
+    steps:
+      - uses: jakejarvis/cloudflare-purge-action@v0.3.0

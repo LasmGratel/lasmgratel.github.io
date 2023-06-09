@@ -81,3 +81,13 @@ deploy:
   repo: https://github.com/LasmGratel/lasmgratel.github.io  #https://bitbucket.org/JohnSmith/johnsmith.bitbucket.io
   branch: gh-pages #published
   message: #leave this blank
+
+sitemap:
+  path: 
+    - sitemap.xml
+    - sitemap.txt
+  template: ./sitemap_template.xml
+  template_txt: ./sitemap_template.txt
+  rel: false
+  tags: true
+  categories: true

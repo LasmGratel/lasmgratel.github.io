@@ -3,11 +3,11 @@
   <title>Lasm Gratel&#39;s Blog</title>
   
   
-  <link href="https://lasmgratel.github.io/atom.xml" rel="self"/>
+  <link href="https://lasm.dev/atom.xml" rel="self"/>
   
-  <link href="https://lasmgratel.github.io/"/>
+  <link href="https://lasm.dev/"/>
   <updated>2023-05-31T09:42:51.983Z</updated>
-  <id>https://lasmgratel.github.io/</id>
+  <id>https://lasm.dev/</id>
   
   <author>
     <name>Lasm Gratel</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>2023-05-31 杂谈</title>
-    <link href="https://lasmgratel.github.io/2023/05/31/2023-05-31/"/>
-    <id>https://lasmgratel.github.io/2023/05/31/2023-05-31/</id>
+    <link href="https://lasm.dev/2023/05/31/2023-05-31/"/>
+    <id>https://lasm.dev/2023/05/31/2023-05-31/</id>
     <published>2023-05-31T08:05:05.000Z</published>
     <updated>2023-05-31T09:42:51.983Z</updated>
     
@@ -38,8 +38,8 @@
   
   <entry>
     <title>机械降神</title>
-    <link href="https://lasmgratel.github.io/2023/04/14/Deus-ex-machina/"/>
-    <id>https://lasmgratel.github.io/2023/04/14/Deus-ex-machina/</id>
+    <link href="https://lasm.dev/2023/04/14/Deus-ex-machina/"/>
+    <id>https://lasm.dev/2023/04/14/Deus-ex-machina/</id>
     <published>2023-04-14T14:18:33.000Z</published>
     <updated>2023-04-14T15:45:48.916Z</updated>
     
@@ -55,14 +55,14 @@
     
     
     
-    <category term="philosophy" scheme="https://lasmgratel.github.io/tags/philosophy/"/>
+    <category term="philosophy" scheme="https://lasm.dev/tags/philosophy/"/>
     
   </entry>
   
   <entry>
     <title>Pixelbee（ピクセルビー）简介及歌曲鉴赏推荐</title>
-    <link href="https://lasmgratel.github.io/2022/12/27/pixelbee/"/>
-    <id>https://lasmgratel.github.io/2022/12/27/pixelbee/</id>
+    <link href="https://lasm.dev/2022/12/27/pixelbee/"/>
+    <id>https://lasm.dev/2022/12/27/pixelbee/</id>
     <published>2022-12-27T13:25:36.000Z</published>
     <updated>2023-04-14T14:17:01.756Z</updated>
     
@@ -77,14 +77,14 @@
     
     
     
-    <category term="music" scheme="https://lasmgratel.github.io/tags/music/"/>
+    <category term="music" scheme="https://lasm.dev/tags/music/"/>
     
   </entry>
   
   <entry>
     <title>2022-11-17 杂谈</title>
-    <link href="https://lasmgratel.github.io/2022/11/17/2022-11-17/"/>
-    <id>https://lasmgratel.github.io/2022/11/17/2022-11-17/</id>
+    <link href="https://lasm.dev/2022/11/17/2022-11-17/"/>
+    <id>https://lasm.dev/2022/11/17/2022-11-17/</id>
     <published>2022-11-17T08:52:23.000Z</published>
     <updated>2022-11-17T09:53:00.049Z</updated>
     
@@ -100,14 +100,14 @@
     
     
     
-    <category term="philosophy" scheme="https://lasmgratel.github.io/tags/philosophy/"/>
+    <category term="philosophy" scheme="https://lasm.dev/tags/philosophy/"/>
     
   </entry>
   
   <entry>
     <title>2022-11-15 杂谈</title>
-    <link href="https://lasmgratel.github.io/2022/11/15/2022-11-15/"/>
-    <id>https://lasmgratel.github.io/2022/11/15/2022-11-15/</id>
+    <link href="https://lasm.dev/2022/11/15/2022-11-15/"/>
+    <id>https://lasm.dev/2022/11/15/2022-11-15/</id>
     <published>2022-11-15T07:51:43.000Z</published>
     <updated>2023-04-14T14:17:01.756Z</updated>
     
@@ -122,14 +122,14 @@
     
     
     
-    <category term="philosophy" scheme="https://lasmgratel.github.io/tags/philosophy/"/>
+    <category term="philosophy" scheme="https://lasm.dev/tags/philosophy/"/>
     
   </entry>
   
   <entry>
     <title>2022-10-18 杂谈</title>
-    <link href="https://lasmgratel.github.io/2022/10/18/2022-10-18/"/>
-    <id>https://lasmgratel.github.io/2022/10/18/2022-10-18/</id>
+    <link href="https://lasm.dev/2022/10/18/2022-10-18/"/>
+    <id>https://lasm.dev/2022/10/18/2022-10-18/</id>
     <published>2022-10-18T13:38:20.000Z</published>
     <updated>2022-11-17T09:56:27.266Z</updated>
     
@@ -144,14 +144,14 @@
     
     
     
-    <category term="miscellaneous philosophy" scheme="https://lasmgratel.github.io/tags/miscellaneous-philosophy/"/>
+    <category term="miscellaneous philosophy" scheme="https://lasm.dev/tags/miscellaneous-philosophy/"/>
     
   </entry>
   
   <entry>
     <title>2022-10-12 杂谈</title>
-    <link href="https://lasmgratel.github.io/2022/10/12/2022-10-12/"/>
-    <id>https://lasmgratel.github.io/2022/10/12/2022-10-12/</id>
+    <link href="https://lasm.dev/2022/10/12/2022-10-12/"/>
+    <id>https://lasm.dev/2022/10/12/2022-10-12/</id>
     <published>2022-10-12T02:02:41.000Z</published>
     <updated>2022-11-17T09:50:40.774Z</updated>
     
@@ -166,14 +166,14 @@
     
     
     
-    <category term="miscellaneous philosophy" scheme="https://lasmgratel.github.io/tags/miscellaneous-philosophy/"/>
+    <category term="miscellaneous philosophy" scheme="https://lasm.dev/tags/miscellaneous-philosophy/"/>
     
   </entry>
   
   <entry>
     <title>First order logic: A semiotics approach</title>
-    <link href="https://lasmgratel.github.io/2022/09/28/first-order-logic-a-semiotics-approach/"/>
-    <id>https://lasmgratel.github.io/2022/09/28/first-order-logic-a-semiotics-approach/</id>
+    <link href="https://lasm.dev/2022/09/28/first-order-logic-a-semiotics-approach/"/>
+    <id>https://lasm.dev/2022/09/28/first-order-logic-a-semiotics-approach/</id>
     <published>2022-09-28T01:22:00.000Z</published>
     <updated>2022-11-17T09:50:25.922Z</updated>
     
@@ -188,14 +188,14 @@
     
     
     
-    <category term="philosophy thoughts" scheme="https://lasmgratel.github.io/tags/philosophy-thoughts/"/>
+    <category term="philosophy thoughts" scheme="https://lasm.dev/tags/philosophy-thoughts/"/>
     
   </entry>
   
   <entry>
     <title>2022-09-25 杂谈</title>
-    <link href="https://lasmgratel.github.io/2022/09/25/2022-09-25/"/>
-    <id>https://lasmgratel.github.io/2022/09/25/2022-09-25/</id>
+    <link href="https://lasm.dev/2022/09/25/2022-09-25/"/>
+    <id>https://lasm.dev/2022/09/25/2022-09-25/</id>
     <published>2022-09-25T12:26:28.000Z</published>
     <updated>2022-11-17T08:51:58.297Z</updated>
     
@@ -210,14 +210,14 @@
     
     
     
-    <category term="miscellaneous" scheme="https://lasmgratel.github.io/tags/miscellaneous/"/>
+    <category term="miscellaneous" scheme="https://lasm.dev/tags/miscellaneous/"/>
     
   </entry>
   
   <entry>
     <title>Java Generic Sucks</title>
-    <link href="https://lasmgratel.github.io/2022/06/22/java-generic-sucks/"/>
-    <id>https://lasmgratel.github.io/2022/06/22/java-generic-sucks/</id>
+    <link href="https://lasm.dev/2022/06/22/java-generic-sucks/"/>
+    <id>https://lasm.dev/2022/06/22/java-generic-sucks/</id>
     <published>2022-06-21T16:07:56.000Z</published>
     <updated>2022-11-17T08:52:02.649Z</updated>
     
@@ -236,8 +236,8 @@
   
   <entry>
     <title>追梦</title>
-    <link href="https://lasmgratel.github.io/2021/11/22/self/"/>
-    <id>https://lasmgratel.github.io/2021/11/22/self/</id>
+    <link href="https://lasm.dev/2021/11/22/self/"/>
+    <id>https://lasm.dev/2021/11/22/self/</id>
     <published>2021-11-22T11:34:05.000Z</published>
     <updated>2022-11-17T08:52:07.896Z</updated>
     
@@ -252,14 +252,14 @@
     
     
     
-    <category term="thoughts" scheme="https://lasmgratel.github.io/tags/thoughts/"/>
+    <category term="thoughts" scheme="https://lasm.dev/tags/thoughts/"/>
     
   </entry>
   
   <entry>
     <title>一件小事说起，谈谈游戏的那些“升级”策略</title>
-    <link href="https://lasmgratel.github.io/2021/11/22/from-a-little-thing/"/>
-    <id>https://lasmgratel.github.io/2021/11/22/from-a-little-thing/</id>
+    <link href="https://lasm.dev/2021/11/22/from-a-little-thing/"/>
+    <id>https://lasm.dev/2021/11/22/from-a-little-thing/</id>
     <published>2021-11-22T11:12:16.000Z</published>
     <updated>2022-11-04T13:24:07.829Z</updated>
     
@@ -274,16 +274,16 @@
     
     
     
-    <category term="thoughts" scheme="https://lasmgratel.github.io/tags/thoughts/"/>
+    <category term="thoughts" scheme="https://lasm.dev/tags/thoughts/"/>
     
-    <category term="minecraft" scheme="https://lasmgratel.github.io/tags/minecraft/"/>
+    <category term="minecraft" scheme="https://lasm.dev/tags/minecraft/"/>
     
   </entry>
   
   <entry>
     <title>Minecraft performance tuning and more</title>
-    <link href="https://lasmgratel.github.io/2021/11/22/minecraft-performance-and-more/"/>
-    <id>https://lasmgratel.github.io/2021/11/22/minecraft-performance-and-more/</id>
+    <link href="https://lasm.dev/2021/11/22/minecraft-performance-and-more/"/>
+    <id>https://lasm.dev/2021/11/22/minecraft-performance-and-more/</id>
     <published>2021-11-22T10:44:10.000Z</published>
     <updated>2022-11-17T09:53:55.409Z</updated>
     
@@ -298,14 +298,14 @@
     
     
     
-    <category term="minecraft" scheme="https://lasmgratel.github.io/tags/minecraft/"/>
+    <category term="minecraft" scheme="https://lasm.dev/tags/minecraft/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="https://lasmgratel.github.io/2021/10/17/hello-world/"/>
-    <id>https://lasmgratel.github.io/2021/10/17/hello-world/</id>
+    <link href="https://lasm.dev/2021/10/17/hello-world/"/>
+    <id>https://lasm.dev/2021/10/17/hello-world/</id>
     <published>2021-10-17T11:34:05.000Z</published>
     <updated>2023-06-09T03:05:28.803Z</updated>
     

@@ -6,8 +6,6 @@ tags: education
 
 [“普鲁士化”的东亚教育，把生命逼入恶性循环](http://www.21bcr.com/pulushihuadedongyajiaoyubashengmingbiruexingxunhuanwenhuazongheng/) （[Wayback Machine](https://web.archive.org/web/20230924203353/http://www.21bcr.com/pulushihuadedongyajiaoyubashengmingbiruexingxunhuanwenhuazongheng/)）
 
-当然这个文章只说了个大概，下面我会从一个群体划分的角度来分别讨论这个问题。
-
 ## 教育的问题
 
 教育问题实际上分为三方面，一是初高中的填鸭式应试教育，二是本科和研究生阶段的高等教育，三是教育与工作之间的衔接问题。

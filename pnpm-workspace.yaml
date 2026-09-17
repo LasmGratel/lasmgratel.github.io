@@ -1,0 +1,4 @@
+allowBuilds:
+  ejs: set this to true or false
+  hexo-util: true
+  highlight.js: true

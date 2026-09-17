@@ -24,8 +24,18 @@
 
   <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
   
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XS2CW939N6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-<meta name="generator" content="Hexo 5.4.2"></head>
+  gtag('config', 'G-XS2CW939N6');
+</script>
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -47,6 +57,128 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-java-generic-sucks" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-06-21T16:07:56.000Z"><a href="/2022/06/22/java-generic-sucks/">2022-06-22</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/06/22/java-generic-sucks/">Java Generic Sucks</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>Java’s generics type erasure has been regarded as a failure design since JDK 1.5, but I haven’t realized it until today when I run into a serious issue about it.</p>
+<h2 id="The-issue"><a href="#The-issue" class="headerlink" title="The issue"></a>The issue</h2><p>I’m using <a target="_blank" rel="noopener" href="https://github.com/TheElectronWill/night-config">night-config</a> library to parse TOML config file for my program. I parsed and stored a list of <code>long</code> from TOML. Right after I got my program up and running, I noticed that <code>list.contains(x)</code> failures at random numbers. Those numbers seem to exist in the list and successfully printed out, but I cannot locate the issue based on the information I got.</p>
+<p>So I read the TOML parser it self, trying to locate where it handles Integer/Long parsing and found the function that deal with number parsing:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://github.com/TheElectronWill/night-config/blob/master/toml/src/main/java/com/electronwill/nightconfig/toml/ValueParser.java#L76</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Number <span class="title function_">parseNumber</span><span class="params">(CharsWrapper valueChars)</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="type">long</span> longValue;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        longValue = Utils.parseLong(numberChars, base);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NumberFormatException ex) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ParsingException</span>(<span class="string">&quot;Invalid integer value: &quot;</span> + valueChars);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">intValue</span> <span class="operator">=</span> (<span class="type">int</span>)longValue;</span><br><span class="line">    <span class="keyword">if</span> (intValue == longValue) &#123;</span><br><span class="line">        <span class="keyword">return</span> intValue;<span class="comment">// returns an int if it is enough to represent the value correctly</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> longValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Note that: <code>returns an int if it is enough to represent the value correctly</code></p>
+<p>So the output list, assumptively <code>ArrayList&lt;Long&gt;</code> typed, does consist <strong>both</strong> Integer and Long <em>if Integer is enought to represent the value</em>, calling <code>List.contains</code> will certainly fail if you pass a long parameter to check whether <strong>the number, which is actually int</strong>, is in the collection.</p>
+<p>Having it double-checked by using fastutil’s LongArrayList confirmed my thoughts, it fails to construct because there are int values in a marked <code>ArrayList&lt;Long&gt;</code> collection.</p>
+<h2 id="Why-blame-Java’s-generic-design"><a href="#Why-blame-Java’s-generic-design" class="headerlink" title="Why blame Java’s generic design?"></a>Why blame Java’s generic design?</h2><p>In this case, <code>ArrayList&lt;Long&gt;</code> is merely a mark that give instructions for compiler to check, but it does not replace the <code>Object[]</code> array in the list, nor does it assert runtime type-checking. The issue may absolutely be avoided or easily solved in C#, Rust and other strong-typed generics language.</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>Always use strong-typed fastutil or trove collections for storing primitive values.</p>
+<p>Blame Java for it’s bad design.</p>
+<p>In this case, cast boxed int or long values to Number and cast it back to Long, then store them in a <code>LongArrayList</code>.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-self" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-11-22T11:34:05.000Z"><a href="/2021/11/22/self/">2021-11-22</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2021/11/22/self/">追梦</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="一种现象"><a href="#一种现象" class="headerlink" title="一种现象"></a>一种现象</h2><p>昨天群友突然提到了几年前的一次 brainstorm 以及当时的憧憬，有感而发。</p>
+<p>首先说结果肯定又是没做，但是真的给了我一些思考。<strong>我们放弃的并不是理想，而是“去思考自己的理想”这么一种过程。</strong></p>
+<p>“既然我每次都实现不了，那下一次还是实现不了吧。”这大概是一种创伤后应激，你的奋斗换来的不是成果，也没有人支持你，最后胎死腹中可能还被人笑几句，我相信大部分人都受不了这种打击，于是选择封闭了这种想法。</p>
+<p>因为这种创伤，我们选择了逃避，选择随波逐流，将其合理化，认为这是“成长的一个过程”。</p>
+<h2 id="一部作品"><a href="#一部作品" class="headerlink" title="一部作品"></a>一部作品</h2><p>2012 年的番剧《さくら荘のペットな彼女》（樱花庄的宠物女孩）。引入了一个很好的主题：<strong>天才就在你身边的时候，你的理想有意义吗？</strong></p>
+<p>这部剧不能从其表面来看，显然它是一部标准的日式高中校园恋爱<del>后空翻</del>后宫番，但这个主题才是真正贯穿全剧或原小说全集的内涵。我们复习一遍，空太遇到了天降女神椎名真白，但是<strong>一个普通到不能再普通的普通人在天才面前感受到了巨大的差距</strong>。同样的，仁也感受到了与美咲间的巨大差距。这是故事中大部分矛盾的根源。</p>
+<h2 id="你提这个干嘛？"><a href="#你提这个干嘛？" class="headerlink" title="你提这个干嘛？"></a>你提这个干嘛？</h2><p>实际上这是我的灵感来源，去年也有人就此发表过文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/156058447">逃离“樱花庄”：我们每个人，都是空太</a>。这篇文章想表达资本主义对人的异化，以及对共产主义社会和人性解放的向往。</p>
+<p>我对这种观点进行一些补充。实际上，不要把理想看的那么崇高。理想也是你的一种需求，一种欲望，你想得到一个远大目标实现后的满足感。</p>
+<blockquote>
+<p>每一个中国青年，从出生的那一刻起，都毋庸置疑的认为自己是天选之子，将来是要改变世界的。而当逐渐的发现，自己并没有成为天选之子的时候，便产生了巨大的落差，<strong>所谓的佛系青年，在中国是不存在的，他们虽然表面谦逊佛系，但实际内心把自己所称的一时佛系当成是隐士大丈夫能屈能伸的必要隐忍，是君子伺机而动的代言，一旦真的有什么机会，他们会立刻豁出性命</strong>，就比如虽然嘴上臭骂 996，但实际却自己主动加班的不在少数。</p>
+</blockquote>
+<blockquote>
+<p>因此，在这样的一种认识下，也就很难实现自我反思和纠偏，在孤傲和自负中，一切的矛盾被归结为时运、时命，是暂时的挫折与失败，相比于反思，青年们对勇于面对挫折，抗击挫折的论调更加喜好。然而，<strong>如果不进行反思纠偏，矛盾就会周期性、重复性出现</strong>。正如前文所言，缺点不是人与他者的对立，而是人的认知与客观规律的对立，不是偶然的而是一种必然，只是其结果以一种具体的形式表现在了他者的反馈上，称之为缺点。因此，部分人所主张的只要逃避，忽视他人看法，退到自己的世界里，问题就不存在的观点是一纸荒唐言，这样的做法仅能做到心理安慰，但却改变不了这种对立所引发的矛盾周期性重复问题。</p>
+</blockquote>
+<p>当代青年遇到的是什么根本问题呢？是急于找到或提升自己在这个社会上的位置。很多矛盾也就归因于此了。</p>
+<h3 id="然而你真的想清楚了吗？这个根本问题真的是你需要解决的吗？"><a href="#然而你真的想清楚了吗？这个根本问题真的是你需要解决的吗？" class="headerlink" title="然而你真的想清楚了吗？这个根本问题真的是你需要解决的吗？"></a><strong>然而你真的想清楚了吗？这个根本问题真的是你需要解决的吗？</strong></h3><p>一部分读者可能已经明白了，给另一部分读者一些提示：<strong>“找准你自己的定位”是不是社会强加给你的一种概念呢？</strong></p>
+<p>很显然，它是社会强加给青年的一个按部就班的思路。</p>
+<p>小时候我们学习为了考初中，高中，考大学，大学考研，为了找好工作。这个过程是“找清自我定位”中之 - 自己的<del>内卷</del>学习能力。工作换了几家，最终稳定下来，此为找到收入定位。最终你进入了按部就班的人生，盖上了盖送进了火葬场。</p>
+<p><strong>这就是对人的异化啊！在这个过程中我们从来就没有想过，“我要干什么”，“我是为了什么”</strong>。想到却解决不了这些问题的人选择了逃避，啃老摆烂。</p>
+<p>那么为什么我们遵循了这样一种循规蹈矩的生活呢？回到最开始提的现象，理想的成功率很低，我们选择了自我封闭。而循规蹈矩的生活成功率很高，我们选择使用给定的道路。</p>
+<p>追逐理想的路上没有反馈可言，<strong>因为这是你自己的道路，你无法跟任何人进行比较</strong>。热衷于内卷的年轻人可是有明确的比较目标的。《樱花庄》剧中的男主空太也有自己做游戏策划的理想，但是没有正向激励，而且选择性只看到了别人的成功，没有看到别人的失败或别人的努力，陷入消沉。但在众人的支持下，还是能明确自己的目标一路奋进。我们就没有那么幸运了。<strong>别说鼓励，我们大部分人可能遭到的更多是冷漠，甚至嘲讽。在如此巨大的心理压力下，正常人都是无法坚持的</strong>。这样的压抑真的是难以言说的，简直就像是全世界都在劝你放弃。</p>
+<h2 id="造成压力的原因"><a href="#造成压力的原因" class="headerlink" title="造成压力的原因"></a>造成压力的原因</h2><p>这就又要说到独立性与同一性了。<strong>个体的我们接受了“理想总是失败的”“循规蹈矩是最好的选择”这样的想法</strong>，对自己而言首先开始自我否定，对外的表现就是“洗心革面”。在群体角度上，大家都秉持了这样的想法，就开始<strong>排他，开始不自主的对理想谈论者产生负面想象</strong>，甚至恶意的将他们与说空话大话的人归为一类。久而久之形成了相互影响的趋势。</p>
+<p>这是对于普通人来说。而对于那些相对成功者来说，他们的鼓励更会带给人无形的压力——“你说的如此轻松！”如同剧中互相喜欢的空太和真白，空太会因为真白的鼓励而生气。你的大脑不能进行多维度分析，只能进行单维度分析，不同的人不同的价值在同一时刻没办法全部表现。男主在前期想要搬离也变得容易理解了，因为他在樱花庄受到的打击远比在学校中大，而不仅仅因为“这些人很怪”。</p>
+<p>社会也不具有一个 general-purpose 的对努力的鼓励和奖励机制，一切以结果为导向，结果就是经典的“努力无用论”。</p>
+<p>人们对他人理想的否定也带有矛盾在其中：一种是自私，即不希望别人过好，突破同样的圈子，衬托出自己的失败；另一种是慈悲，因为自己受到了打击，所以不希望别人受到同样的打击。这种矛盾是对立统一的，通过<strong>对进步</strong>的打压，形成了一个稳定的群体。</p>
+<h2 id="方法论"><a href="#方法论" class="headerlink" title="方法论"></a>方法论</h2><p><em>(2021.11.23 更新)</em></p>
+<p>有没有解决之道呢？带领群体进步是上策，但对于个人来说显然困难不小。另一种是，真正找到大家的共性方面，不仅只是趣味相同。</p>
+<p>在跟别人的探讨中，我提出对“和而不同，同而不和”的一种理解：<strong>人与人之间的相处要靠三观</strong>。一种解释方法是把人们的三观看成一种对于人的自我价值，以及周围价值的<strong>基于人本身特质的加权认定算法</strong>。</p>
+<p>这里的特质指性格，能力，价值观等。</p>
+<p><strong>加权算法</strong>的举例分析：</p>
+<ul>
+<li><p>现象：两个人因为有相同/相似的特质而形成共识</p>
+<p>本质：两个人对某个或某些特质的权重相同</p>
+<p>假设两个人拥有同一个特质的不同程度，例如一个钢琴初学者和钢琴大师，如果两人都把钢琴作为重要的部分，两人会有共同语言。</p>
+</li>
+<li><p>现象：一个人身上有这样的特质，而一个人欣赏这样的特质，两人形成共识</p>
+<p>本质：仍然是权重相同</p>
+<p>反例：一个厌恶弹钢琴的钢琴大师，和一个欣赏钢琴曲的普通人，会出现摩擦和矛盾</p>
+</li>
+<li><p>现象：两个人认为 A 同等重要，但一个人认为跟 A 比起来 B 更重要，另一个人认为跟 A 比起来 C 更重要，虽然前者的 C 比后者强，两人仍然出现矛盾</p>
+<p>本质：加权算法不同。前者的加权算法可以假设为<code>80%B + 60%A + 50%C</code>，后者的加权算法可以假设为<code>80%C + 60%A + 50%B</code>，无论算法的结果如何，这套算法不同，就会出现认定矛盾</p>
+</li>
+</ul>
+<p>从这套理论分析来看，结果如何是根本不重要的！重要的是你对某事的重视程度如何。而我们追求的也不是绝对的“自我价值实现”，而是在旁人眼里你的自我价值的重要程度（权重）。你在一件事上做的不够好，在别人眼里它的权重是 200%，认为你做得足够好了；你在一件事上做的不够好，别人眼中它的权重是 10%，无论如何都不会得到夸奖。</p>
+<p>当然，如果说你得出了“取悦别人”的结论，那就大错特错了。取悦别人不会满足你自己的情绪需求，而理想，信念，这都是自己的情绪需求，是欺骗所不能得到的。要找到肯定你的人，欣赏你的人与你为伴，或是解构矛盾的自己。</p>
+<p><strong>所谓的大同社会，无非是找到一套所谓“正确”的三观强加给所有人罢了</strong>。这个后现代的社会已然离散化，小圈子化至今，要想正确的分析这些观念，改造或是延申自己的想法，就必须了解共性。当你了解自己的某些决定背后的个人原因和社会原因后，假如前提被推翻，那么就勇敢地改变自己的想法；假如前提依然成立，那么就真诚的接纳自己。我虽然也不能摆脱迷茫，但至少这是我认为的一种正确的方向。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-from-a-little-thing" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -195,6 +327,43 @@
 
 
 
+  <article id="post-hello-world" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-10-17T11:34:05.000Z"><a href="/2021/10/17/hello-world/">2021-10-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2021/10/17/hello-world/">Hello World</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>Hello World 是 Hexo 的默认页面，是所有编程语言中的一个开始。<del>反正这里也没有太多人看吧，</del>毕竟一般都在最下面，最古老的地方。所以，稍微讲讲发博客的理由。</p>
+<p>很早就有写博客的冲动了，当初是搜索到有“免费空间”这么一个东西，也就是空间站，在那里部署了第一个 WordPress。之后很多次都有部署过，但是可能写了很多，又删掉了，或者没有发出来。</p>
+<p>在数次思想变化和成长中，每一年都认为自己去年的想法很幼稚，每一天都认为自己前一天的想法很无脑。<strong>但其实这些事情又有什么所谓呢？我们本身都是自己的历史，否定自己的过去，不就是否定自己了吗？</strong></p>
+<p>不满足于只是 QQ 上交流，而是想把想法记录下来，有的时候也方便说明“这之前讨论过了啊”。俗话说“好记性不如烂笔头”。个人博客其实也是对这种生活中冥想的一种总结整理，在总结的基础上也能找到头脑风暴中犯的一些错误。当然我知道我最大的问题就是文笔不好，看起来并不畅快，懵懵懂懂的，也欢迎读者给出改进建议。</p>
+<p>希望未来的自己，或者是看到这一篇有同感的人，或是一个路人，看到这些话语也不要觉得幼稚与无病呻吟了吧。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
 
 <nav id="pagination">
   
@@ -207,7 +376,7 @@
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
     <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="as_sitesearch" value="lasmgratel.github.io">
+    <input type="hidden" name="as_sitesearch" value="lasm.dev">
   </form>
 </div>
 
@@ -227,7 +396,7 @@
   
     <li><a href="/tags/music/">music</a><small>1</small></li>
   
-    <li><a href="/tags/philosophy/">philosophy</a><small>2</small></li>
+    <li><a href="/tags/philosophy/">philosophy</a><small>4</small></li>
   
     <li><a href="/tags/philosophy-thoughts/">philosophy thoughts</a><small>1</small></li>
   
@@ -241,7 +410,7 @@
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2023 Lasm Gratel
+  &copy; 2026 Lasm Gratel
   
 </div>
 <div class="clearfix"></div></footer>
@@ -270,5 +439,18 @@
 })(jQuery);
 </script>
 
-</body>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 </html>
